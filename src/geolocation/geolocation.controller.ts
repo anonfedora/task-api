@@ -12,15 +12,14 @@ export class GeolocationController {
         @Query("visitor_name") visitorName: string,
         @Req() request: Request
     ): Promise<any> {
-        const clientIp =
-            request.headers["x-forwarded-for"] ||
-            request.connection.remoteAddress;
+        const clientIp = this.getClientIp(request);
+
+        console.log(clientIp);
         const locationData = await this.geolocationService.getLocation(
             clientIp as string
         );
         console.log(locationData + "locationData.city");
         const city = locationData.city;
-        
 
         const weatherData = await this.geolocationService.getWeather(city);
         console.log(weatherData);
@@ -32,5 +31,14 @@ export class GeolocationController {
             location: city,
             greeting: `Hello, ${visitorName}!, the temperature is ${temperature} degrees Celsius in ${city}`
         };
+    }
+
+    private getClientIp(request: Request): string {
+        const xForwardedFor = request.headers["x-forwarded-for"];
+        if (xForwardedFor) {
+            const forwardedIps = (xForwardedFor as string).split(",");
+            return forwardedIps[0].trim();
+        }
+        return request.ip || request.connection.remoteAddress;
     }
 }
