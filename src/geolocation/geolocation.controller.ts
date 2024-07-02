@@ -3,7 +3,7 @@ import { GeolocationService } from "./geolocation.service";
 import { Request } from "express";
 import IP from "ip";
 
-@Controller("api")
+@Controller("api/hello")
 export class GeolocationController {
     constructor(private readonly geolocationService: GeolocationService) {}
 
@@ -13,12 +13,13 @@ export class GeolocationController {
         @Req() request: Request
     ): Promise<any> {
         const clientIp =
-            request.headers["x-forwarded-for"] ||
-            request.connection.remoteAddress;
+            request.ip
+            /*request.headers["x-forwarded-for"] ||
+            request.connection.remoteAddress;*/
         const locationData = await this.geolocationService.getLocation(
             clientIp as string
         );
-        console.log(locationData)
+        console.log(locationData);
         const city = locationData.city;
         const weatherData = await this.geolocationService.getWeather(city);
         const temperature = weatherData;
