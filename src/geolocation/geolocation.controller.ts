@@ -1,6 +1,7 @@
 import { Controller, Get, Query, Req } from "@nestjs/common";
 import { GeolocationService } from "./geolocation.service";
 import { Request } from "express";
+import IP from "ip";
 
 @Controller("api")
 export class GeolocationController {
@@ -14,7 +15,6 @@ export class GeolocationController {
         const clientIp =
             request.headers["x-forwarded-for"] ||
             request.connection.remoteAddress;
-        console.log(request.ip);
         const locationData = await this.geolocationService.getLocation(
             clientIp as string
         );

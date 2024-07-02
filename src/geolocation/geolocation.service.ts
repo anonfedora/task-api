@@ -7,9 +7,12 @@ export class GeolocationService {
     constructor(private configService: ConfigService) {}
 
     async getLocation(ip: string): Promise<any> {
-        const url = `https://apiip.net/api/check?ip=${ip}&accessKey=${this.configService.getOrThrow(
-            "GEO_LOCATION_API_KEY"
+        const url = `https://api.weatherapi.com/v1/ip.json?q=${ip}&key=${this.configService.get(
+            "WEATHER_API"
         )}`;
+        /*const url = `https://apiip.net/api/check?ip=${ip}&accessKey=${this.configService.getOrThrow(
+            "GEO_LOCATION_API_KEY"
+        )}`;*/
         const response = await fetch(url);
         console.log(response);
         return response;
@@ -21,7 +24,7 @@ export class GeolocationService {
                 "OPEN_WEATHER"
             )}`
         );
-        console.log(response);
+        //  console.log(response);
         return response;
     }
 }
