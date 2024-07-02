@@ -18,10 +18,11 @@ export class GeolocationController {
         const locationData = await this.geolocationService.getLocation(
             clientIp as string
         );
+        console.log(locationData)
         const city = locationData.city;
         const weatherData = await this.geolocationService.getWeather(city);
         const temperature = weatherData;
-        console.log(temperature);
+        //console.log(temperature);
 
         return {
             client_ip: clientIp,

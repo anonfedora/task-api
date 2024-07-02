@@ -10,21 +10,22 @@ export class GeolocationService {
         const url = `https://api.weatherapi.com/v1/ip.json?q=${ip}&key=${this.configService.get(
             "WEATHER_API"
         )}`;
+        //105.112.226.93
         /*const url = `https://apiip.net/api/check?ip=${ip}&accessKey=${this.configService.getOrThrow(
             "GEO_LOCATION_API_KEY"
         )}`;*/
-        const response = await fetch(url);
+        const response = await axios.get(url);
         console.log(response);
         return response;
     }
 
     async getWeather(city: string): Promise<any> {
-        const response = await fetch(
-            `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${this.configService.getOrThrow(
-                "OPEN_WEATHER"
-            )}`
-        );
-        //  console.log(response);
+        const url = `https://api.openweathermap.org/data/2.5/weather?appid=${this.configService.get(
+            "OPEN_WEATHER"
+        )}&q=${city}`;
+
+        const response = await fetch(url);
+        console.log(response);
         return response;
     }
 }
