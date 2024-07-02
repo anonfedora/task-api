@@ -13,17 +13,19 @@ export class GeolocationController {
         @Req() request: Request
     ): Promise<any> {
         const clientIp =
-            request.ip
-            /*request.headers["x-forwarded-for"] ||
-            request.connection.remoteAddress;*/
+            request.headers["x-forwarded-for"] ||
+            request.connection.remoteAddress;
         const locationData = await this.geolocationService.getLocation(
             clientIp as string
         );
-        console.log(locationData);
+        console.log(locationData + "locationData.city");
         const city = locationData.city;
+        
+
         const weatherData = await this.geolocationService.getWeather(city);
-        const temperature = weatherData;
-        //console.log(temperature);
+        console.log(weatherData);
+        const temperature = weatherData.main.temp;
+        console.log(temperature + "weatherData.current");
 
         return {
             client_ip: clientIp,
